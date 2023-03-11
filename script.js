@@ -58,7 +58,7 @@ window.addEventListener("DOMContentLoaded", () => {
 			if (headingExp.test(cleanLine)) {
 				const level = cleanLine.match(/#/g).length - 1;
 				const listSymbol = LIST_SYMBOLS[level % 3];
-				const replacedContent = cleanLine.replace(headingExp, "");
+				const replacedContent = line.replace(headingExp, "");
 				const slug = slugify(cleanLine);
 
 				link = `${[...Array(level * 2).keys()]
