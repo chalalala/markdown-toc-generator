@@ -1,11 +1,29 @@
-const cleanUpLine = (line) => {
-	const invalidExp = /[^#\w\s]/;
+const LIST_SYMBOLS = {
+	0: "-",
+	1: "+",
+	2: "*",
+};
 
-	if (invalidExp.test(line)) {
-		return line.replace(invalidExp, "");
+const extractLinkLabel = (text) => {
+	const linkExp = /^(?:#+)\s\[.+\]\(.+\)/;
+
+	if (linkExp.test(text)) {
+		return text.match(/^(?:#+)\s(?:\[)(.+)(?:\])/)[0];
 	}
 
-	return line;
+	return text;
+};
+
+const cleanUpLine = (line) => {
+	const extractedLine = extractLinkLabel(line);
+
+	// Remove all characters that are not digits except # and spaces
+	const invalidExp = /[^#\w\s]/g;
+
+	//Remove duplicated space
+	const spaceExp = /\s{2,}/g;
+
+	return extractedLine.replace(invalidExp, "").replace(spaceExp, " ");
 };
 
 const slugify = (str) =>
@@ -16,10 +34,10 @@ const slugify = (str) =>
 		.replace(/[\s_-]+/g, "-")
 		.replace(/^-+|-+$/g, "");
 
-const LIST_SYMBOLS = {
-	0: "-",
-	1: "+",
-	2: "*",
+const copyText = () => {
+	const output = document.getElementById("output");
+
+	navigator.clipboard.writeText(output.value);
 };
 
 window.addEventListener("DOMContentLoaded", () => {
